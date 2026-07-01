@@ -43,8 +43,10 @@ export default function OrderSuccess() {
           </p>
           {order?.payment_method === 'advance_easypaisa' && (
             <div className="text-sm text-amber-800 space-y-1 bg-white/60 rounded-lg p-3">
-              <p><span className="font-medium">EasyPaisa/JazzCash:</span> {accounts?.easypaisa?.number || '0325 7163224'}</p>
-              <p><span className="font-medium">Account Holder:</span> {accounts?.easypaisa?.holder || 'Muhammad Haider'}</p>
+              <p><span className="font-medium">JazzCash:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+              <p><span className="font-medium">EasyPaisa:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+              <p><span className="font-medium">NayaPay:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+              <p><span className="font-medium">Account Holder:</span> {accounts?.easypaisa?.holder || 'Muhammed Haider'}</p>
             </div>
           )}
           {order?.payment_method === 'advance_bank' && (
@@ -56,6 +58,7 @@ export default function OrderSuccess() {
             </div>
           )}
           <p className="text-xs text-amber-600">We will verify your payment within 24 hours.</p>
+          <p className="text-xs text-red-600 font-medium mt-2">⚠ Server payment verification may be delayed. In case of delay, please use Bank Transfer or contact us on WhatsApp. Your order will ship only after payment confirmation.</p>
         </motion.div>
 
         <Link to="/shop" className="btn-primary inline-flex items-center gap-2">

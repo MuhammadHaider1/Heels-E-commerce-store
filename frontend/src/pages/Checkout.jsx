@@ -153,8 +153,10 @@ export default function Checkout() {
                     <div className="text-sm space-y-1 text-amber-900">
                       {paymentMethod === 'advance_easypaisa' && (
                         <>
-                          <p><span className="font-medium">EasyPaisa/JazzCash:</span> {accounts?.easypaisa?.number || '0325 7163224'}</p>
-                          <p><span className="font-medium">Account Holder:</span> {accounts?.easypaisa?.holder || 'Muhammad Haider'}</p>
+                          <p><span className="font-medium">JazzCash:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+                          <p><span className="font-medium">EasyPaisa:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+                          <p><span className="font-medium">NayaPay:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
+                          <p><span className="font-medium">Account Holder:</span> {accounts?.easypaisa?.holder || 'Muhammed Haider'}</p>
                         </>
                       )}
                       {paymentMethod === 'advance_bank' && (
@@ -166,6 +168,10 @@ export default function Checkout() {
                         </>
                       )}
                     </div>
+                  </div>
+
+                  <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-3">
+                    <p className="text-xs text-red-700 font-medium">⚠ Note: Server payment verification may be delayed. In case of delay, please use Bank Transfer or contact us on WhatsApp. Your order will only ship after payment is confirmed.</p>
                   </div>
 
                   <div className="mt-3">
