@@ -6,7 +6,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(
         queryset=Product.objects.all(), required=False, allow_null=True
     )
-    product_image = serializers.URLField(required=False, allow_blank=True, allow_null=True)
+    product_image = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     size = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     color = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     discount_price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
