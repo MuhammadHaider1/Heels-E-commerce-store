@@ -30,11 +30,12 @@ export default function Checkout() {
   }, [items, navigate])
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
-  const discountAmount = subtotal - total
+  const productDiscount = subtotal - total
   const bankDiscount = paymentMethod === 'advance_bank' ? total * 0.03 : 0
-  const discountedTotal = total - bankDiscount
-  const advanceAmount = (discountedTotal * 0.5).toFixed(2)
-  const remainingAmount = (discountedTotal * 0.5).toFixed(2)
+  const orderTotal = total - bankDiscount
+  const totalDiscount = productDiscount + bankDiscount
+  const advanceAmount = (orderTotal * 0.5).toFixed(2)
+  const remainingAmount = (orderTotal * 0.5).toFixed(2)
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -60,8 +61,8 @@ export default function Checkout() {
       const fd = new FormData()
       Object.entries(form).forEach(([k, v]) => fd.append(k, v))
       fd.append('subtotal', subtotal)
-      fd.append('discount_amount', discountAmount)
-      fd.append('total', total)
+      fd.append('discount_amount', totalDiscount)
+      fd.append('total', orderTotal)
       fd.append('payment_method', paymentMethod)
       fd.append('advance_amount', advanceAmount)
       if (bankDiscount > 0) fd.append('bank_discount', bankDiscount.toFixed(2))
@@ -151,7 +152,7 @@ export default function Checkout() {
                   exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2 mt-2">
                     <p className="font-semibold text-sm text-amber-800">
-                      Send <span className="text-lg">PKR {advanceAmount}</span> (50% Advance)
+                      Send <span className="text-lg">PKR {advanceAmount}</span> (50% of PKR {orderTotal.toFixed(2)})
                     </p>
                     <p className="text-xs text-amber-600">Remaining PKR {remainingAmount} will be collected on delivery</p>
                     <div className="text-sm space-y-1 text-amber-900">
@@ -236,8 +237,8 @@ export default function Checkout() {
             <hr />
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-gray-500">Subtotal</span><span>PKR {subtotal.toFixed(2)}</span></div>
-              {discountAmount > 0 && (
-                <div className="flex justify-between text-red-500"><span>Discount</span><span>-PKR {discountAmount.toFixed(2)}</span></div>
+              {productDiscount > 0 && (
+                <div className="flex justify-between text-red-500"><span>Discount</span><span>-PKR {productDiscount.toFixed(2)}</span></div>
               )}
               {bankDiscount > 0 && (
                 <div className="flex justify-between text-green-600"><span>Bank Discount (3%)</span><span>-PKR {bankDiscount.toFixed(2)}</span></div>
@@ -246,7 +247,7 @@ export default function Checkout() {
               <div className="flex justify-between text-amber-700"><span>Advance (50%)</span><span className="font-semibold">PKR {advanceAmount}</span></div>
               <div className="flex justify-between text-gray-500"><span>Remaining on Delivery</span><span>PKR {remainingAmount}</span></div>
               <hr />
-              <div className="flex justify-between text-lg font-semibold"><span>Total</span><span>PKR {discountedTotal.toFixed(2)}</span></div>
+              <div className="flex justify-between text-lg font-semibold"><span>Total</span><span>PKR {orderTotal.toFixed(2)}</span></div>
             </div>
             <p className="text-xs text-gray-400 text-center pt-2">
               Send PKR {advanceAmount} (50%) advance & upload receipt. Remaining PKR {remainingAmount} on delivery. {bankDiscount > 0 && '3% bank discount applied.'}
