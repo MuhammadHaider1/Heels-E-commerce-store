@@ -14,6 +14,7 @@ const filters = [
 export default function Shop() {
   const dispatch = useDispatch()
   const { items, loading, total, categories } = useSelector((s) => s.products)
+  const catList = Array.isArray(categories) ? categories : []
   const [searchParams, setSearchParams] = useSearchParams()
   const [mobileFilters, setMobileFilters] = useState(false)
   const [priceRange, setPriceRange] = useState([0, 500])
@@ -60,7 +61,7 @@ export default function Shop() {
               <div key={f.key}>
                 <h4 className="text-sm font-medium mb-3 capitalize">{f.label}</h4>
                 <div className="space-y-2">
-                  {(f.options === 'dynamic' ? categories.map((c) => ({ value: String(c.id), label: c.name })) : f.options).map((opt) => {
+                  {(f.options === 'dynamic' ? catList.map((c) => ({ value: String(c.id), label: c.name })) : f.options).map((opt) => {
                     const val = typeof opt === 'string' ? opt : opt.value
                     const label = typeof opt === 'string' ? opt : opt.label
                     const isActive = searchParams.get(f.key) === val
@@ -128,7 +129,7 @@ export default function Shop() {
                   <div key={f.key}>
                     <h4 className="text-sm font-medium mb-3 capitalize">{f.label}</h4>
                     <div className="space-y-2">
-                      {(f.options === 'dynamic' ? categories.map((c) => ({ value: String(c.id), label: c.name })) : f.options).map((opt) => {
+                      {(f.options === 'dynamic' ? catList.map((c) => ({ value: String(c.id), label: c.name })) : f.options).map((opt) => {
                         const val = typeof opt === 'string' ? opt : opt.value
                         const label = typeof opt === 'string' ? opt : opt.label
                         const isActive = searchParams.get(f.key) === val

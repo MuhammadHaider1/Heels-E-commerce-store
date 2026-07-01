@@ -33,7 +33,7 @@ const productSlice = createSlice({
       .addCase(fetchProduct.fulfilled, (state, { payload }) => { state.current = payload })
       .addCase(fetchFeatured.fulfilled, (state, { payload }) => { state.featured = payload.results || payload })
       .addCase(fetchComingSoon.fulfilled, (state, { payload }) => { state.comingSoon = payload.results || payload })
-      .addCase(fetchCategories.fulfilled, (state, { payload }) => { state.categories = payload })
+      .addCase(fetchCategories.fulfilled, (state, { payload }) => { state.categories = payload.results || payload })
   },
 })
 
