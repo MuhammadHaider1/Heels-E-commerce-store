@@ -42,7 +42,7 @@ class OrderListSerializer(serializers.ModelSerializer):
         model = Order
         fields = [
             'id', 'order_id', 'customer_name', 'customer_phone',
-            'total', 'payment_method', 'payment_status', 'advance_amount',
+            'total', 'payment_method', 'payment_status', 'advance_amount', 'payment_receipt',
             'status', 'is_read', 'item_count', 'created_at', 'receipt_url'
         ]
 

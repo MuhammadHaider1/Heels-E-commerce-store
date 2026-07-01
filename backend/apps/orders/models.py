@@ -70,16 +70,29 @@ class Order(models.Model):
 
     @property
     def receipt_url(self):
-        if not self.payment_receipt:
+        from django.conf import settings
+        raw = getattr(self, 'payment_receipt', None)
+        if not raw:
+            try:
+                raw = self.payment_receipt
+            except Exception:
+                return None
+        if not raw:
             return None
-        name = self.payment_receipt.name
-        if name and not name.startswith('http://') and not name.startswith('https://') and not name.startswith('/'):
-            from django.conf import settings
-            if hasattr(settings, 'CLOUDINARY_STORAGE'):
-                cloud_name = settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')
-                if cloud_name and 'cloudinary' not in name:
-                    return f'https://res.cloudinary.com/{cloud_name}/image/upload/{name}'
-        return self.payment_receipt.url
+        try:
+            name = raw.name
+        except Exception:
+            return None
+        if not name:
+            return None
+        if hasattr(settings, 'CLOUDINARY_STORAGE'):
+            cloud_name = settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')
+            if cloud_name and 'cloudinary' not in name and not name.startswith('http'):
+                return f'https://res.cloudinary.com/{cloud_name}/image/upload/{name}'
+        try:
+            return raw.url
+        except Exception:
+            return None
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
