@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -22,6 +23,12 @@ export default function Home() {
 
   return (
     <div>
+      <Helmet>
+        <title>Randahaws Store – Premium Women's Fashion</title>
+        <meta name="description" content="Shop premium women's fashion in Pakistan – heels, handbags, suits, jewelry, makeup & more. Free shipping on orders over PKR 5,000." />
+        <meta property="og:title" content="Randahaws Store – Women's Fashion" />
+        <meta property="og:description" content="Premium women's fashion: heels, handbags, suits, jewelry & makeup. Shop now." />
+      </Helmet>
       <section className="relative min-h-screen flex items-center bg-gradient-to-br from-luxury-cream via-white to-primary-50 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543163521-2bf539246148?w=1920')] bg-cover bg-center opacity-5" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40">
