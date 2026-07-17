@@ -7,7 +7,7 @@ import api from '../utils/api'
 
 const paymentMethods = [
   { value: 'advance_easypaisa', label: '50% Advance via EasyPaisa/JazzCash', desc: 'Send 50% advance payment' },
-  { value: 'advance_bank', label: '50% Advance via Bank Transfer (3% OFF)', desc: 'Bank transfer & get 3% discount' },
+  { value: 'advance_bank', label: '50% Advance via Bank Transfer', desc: 'Bank transfer' },
 ]
 
 export default function Checkout() {
@@ -29,9 +29,8 @@ export default function Checkout() {
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const productDiscount = subtotal - total
-  const bankDiscount = paymentMethod === 'advance_bank' ? total * 0.03 : 0
-  const orderTotal = total - bankDiscount
-  const totalDiscount = productDiscount + bankDiscount
+  const orderTotal = total
+  const totalDiscount = productDiscount
   const advanceAmount = (orderTotal * 0.5).toFixed(2)
   const remainingAmount = (orderTotal * 0.5).toFixed(2)
 
@@ -52,7 +51,6 @@ export default function Checkout() {
       fd.append('total', orderTotal)
       fd.append('payment_method', paymentMethod)
       fd.append('advance_amount', advanceAmount)
-      if (bankDiscount > 0) fd.append('bank_discount', bankDiscount.toFixed(2))
       items.forEach((item, idx) => {
         if (item.product) fd.append(`items[${idx}]product`, item.product)
         fd.append(`items[${idx}]product_name`, item.name)
@@ -151,16 +149,12 @@ export default function Checkout() {
                         </>
                       )}
                       {paymentMethod === 'advance_bank' && (
-                        <>
-                          <p className="font-semibold text-green-700">🎉 3% Bank Discount Applied!</p>
-                          <p className="text-xs text-green-600 mt-1 mb-2">Pay via bank transfer & get 3% off your total!</p>
-                          <div>
-                            <p><span className="font-medium">Bank:</span> {accounts?.bank?.bank_name}</p>
-                            <p><span className="font-medium">Account Title:</span> {accounts?.bank?.account_title}</p>
-                            <p><span className="font-medium">Account #:</span> {accounts?.bank?.account_number}</p>
-                            {accounts?.bank?.iban && <p><span className="font-medium">IBAN:</span> {accounts?.bank?.iban}</p>}
-                          </div>
-                        </>
+                        <div>
+                          <p><span className="font-medium">Bank:</span> {accounts?.bank?.bank_name}</p>
+                          <p><span className="font-medium">Account Title:</span> {accounts?.bank?.account_title}</p>
+                          <p><span className="font-medium">Account #:</span> {accounts?.bank?.account_number}</p>
+                          {accounts?.bank?.iban && <p><span className="font-medium">IBAN:</span> {accounts?.bank?.iban}</p>}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -207,9 +201,6 @@ export default function Checkout() {
               {productDiscount > 0 && (
                 <div className="flex justify-between text-red-500"><span>Discount</span><span>-PKR {productDiscount.toFixed(2)}</span></div>
               )}
-              {bankDiscount > 0 && (
-                <div className="flex justify-between text-green-600"><span>Bank Discount (3%)</span><span>-PKR {bankDiscount.toFixed(2)}</span></div>
-              )}
               <div className="flex justify-between"><span className="text-gray-500">Shipping</span><span className="text-emerald-600 font-medium">Free</span></div>
               <div className="flex justify-between text-amber-700"><span>Advance (50%)</span><span className="font-semibold">PKR {advanceAmount}</span></div>
               <div className="flex justify-between text-gray-500"><span>Remaining on Delivery</span><span>PKR {remainingAmount}</span></div>
@@ -217,7 +208,7 @@ export default function Checkout() {
               <div className="flex justify-between text-lg font-semibold"><span>Total</span><span>PKR {orderTotal.toFixed(2)}</span></div>
             </div>
             <p className="text-xs text-gray-400 text-center pt-2">
-              Send PKR {advanceAmount} (50%) advance. Remaining PKR {remainingAmount} on delivery. {bankDiscount > 0 && '3% bank discount applied.'}
+              Send PKR {advanceAmount} (50%) advance. Remaining PKR {remainingAmount} on delivery.
             </p>
           </div>
         </motion.div>

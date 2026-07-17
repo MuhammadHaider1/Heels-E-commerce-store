@@ -41,9 +41,6 @@ export default function OrderSuccess() {
             Send <span className="font-bold text-amber-900">PKR {order?.advance_amount || '0'}</span> (50%) now.
             <br />Remaining <span className="font-bold">PKR {order?.advance_amount || '0'}</span> collected on delivery.
           </p>
-          {order?.bank_discount > 0 && (
-            <p className="text-sm text-green-700 font-medium">🎉 3% Bank Discount Applied!</p>
-          )}
           {order?.payment_method === 'advance_easypaisa' && (
             <div className="text-sm text-amber-800 space-y-1 bg-white/60 rounded-lg p-3">
               <p><span className="font-medium">JazzCash:</span> {accounts?.easypaisa?.number || '03257163224'}</p>
@@ -54,7 +51,6 @@ export default function OrderSuccess() {
           )}
           {order?.payment_method === 'advance_bank' && (
             <div className="text-sm text-amber-800 space-y-1 bg-white/60 rounded-lg p-3">
-              <p className="font-semibold text-green-700">🎉 3% Bank Discount Applied</p>
               <p><span className="font-medium">Bank:</span> {accounts?.bank?.bank_name}</p>
               <p><span className="font-medium">Account Title:</span> {accounts?.bank?.account_title}</p>
               <p><span className="font-medium">Account #:</span> {accounts?.bank?.account_number}</p>
