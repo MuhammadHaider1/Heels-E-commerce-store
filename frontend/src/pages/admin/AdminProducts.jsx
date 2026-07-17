@@ -8,9 +8,13 @@ const GENDER_CHOICES = ['women', 'men', 'unisex']
 const emptyProduct = {
   name: '', slug: '', category: '', description: '', short_description: '',
   price: '', discount_percent: 0, gender: 'women', heel_type: '',
-  heel_height: '', sizes: '[]', colors: '[]', attributes: '{}', stock_count: 0,
+  heel_height: '', stock_count: 0,
   is_in_stock: true, is_featured: false, is_coming_soon: false, is_active: true,
 }
+
+const EMPTY_SIZES = '[]'
+const EMPTY_COLORS = '[]'
+const EMPTY_ATTRS = '{}'
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
@@ -77,8 +81,8 @@ export default function AdminProducts() {
       gender: product.gender || 'women',
       heel_type: product.heel_type || '',
       heel_height: product.heel_height || '',
-      sizes: Array.isArray(product.sizes) ? JSON.stringify(product.sizes) : (product.sizes || '[]'),
-      colors: Array.isArray(product.colors) ? JSON.stringify(product.colors) : (product.colors || '[]'),
+      sizes: Array.isArray(product.sizes) ? JSON.stringify(product.sizes) : (product.sizes || EMPTY_SIZES),
+      colors: Array.isArray(product.colors) ? JSON.stringify(product.colors) : (product.colors || EMPTY_COLORS),
       attributes: attrsStr,
       stock_count: product.stock_count || 0,
       is_in_stock: product.is_in_stock ?? true,
@@ -106,8 +110,8 @@ export default function AdminProducts() {
       const fd = new FormData()
       Object.entries(form).forEach(([k, v]) => {
         if (k === 'sizes' || k === 'colors' || k === 'attributes') {
-          try { fd.append(k, JSON.stringify(JSON.parse(v || (k === 'attributes' ? '{}' : '[]')))) }
-          catch { fd.append(k, k === 'attributes' ? '{}' : '[]') }
+          try { fd.append(k, JSON.stringify(JSON.parse(v || (k === 'attributes' ? EMPTY_ATTRS : EMPTY_SIZES)))) }
+          catch { fd.append(k, k === 'attributes' ? EMPTY_ATTRS : EMPTY_SIZES) }
         } else {
           fd.append(k, v ?? '')
         }
@@ -365,13 +369,6 @@ export default function AdminProducts() {
                       ))}
                     </div>
                   )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Colors (JSON)</label>
-                  <input value={form.colors} onChange={(e) => setForm({ ...form, colors: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none"
-                    placeholder='[{"name":"Black","hex":"#000000"}]' />
                 </div>
 
                 <div className="flex flex-wrap gap-6">
