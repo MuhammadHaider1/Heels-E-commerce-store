@@ -1,5 +1,3 @@
-import api from './api'
-
 function fireBrowserPixel(event, properties = {}) {
   try {
     if (typeof window.ttq !== 'undefined' && window.ttq.track) {
@@ -11,20 +9,7 @@ function fireBrowserPixel(event, properties = {}) {
 }
 
 export function sendTikTokEvent(event, properties = {}) {
-  try {
-    fireBrowserPixel(event, properties)
-
-    const payload = {
-      event,
-      payload: {
-        event_id: `${event}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-        properties,
-      },
-    }
-    api.post('/orders/tiktok-event/', payload).catch(() => {})
-  } catch {
-    /* silent */
-  }
+  fireBrowserPixel(event, properties)
 }
 
 export function trackViewContent(content) {
@@ -55,13 +40,5 @@ export function trackPurchase(order) {
     currency: 'PKR',
     value: Number(order.total),
     order_id: order.order_id,
-  })
-}
-
-export function trackTestEvent() {
-  sendTikTokEvent('CompletePayment', {
-    contents: [{ content_id: 'test_001', content_name: 'Test Product', content_type: 'product', quantity: 1 }],
-    currency: 'PKR',
-    value: 1000,
   })
 }
