@@ -49,7 +49,7 @@ export default function Navbar({ onCartOpen }) {
           </button>
 
           <Link to="/" className="font-serif text-xl md:text-2xl font-bold tracking-wide text-luxury-charcoal dark:text-white">
-            HR,S HUB
+<span className="text-primary-600">HR,</span>S HUB
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
